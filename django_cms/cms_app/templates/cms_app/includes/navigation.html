@@ -1,0 +1,46 @@
+{% load static cms_tags %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+        {# Logo / Site Name #}
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            {% if site_config.logo %}
+                <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}" height="40" class="me-2">
+            {% else %}
+                <strong>{{ site_config.site_name }}</strong>
+            {% endif %}
+        </a>
+
+        {# Mobile Toggle Button #}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        {# Navigation Menu #}
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% for item in main_menu %}
+                    {% if item.children.exists %}
+                        {# Dropdown Menu #}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{ item.id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ item.label }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ item.id }}">
+                                {% for child in item.children.all %}
+                                    {% if child.is_visible %}
+                                        <li><a class="dropdown-item" href="{{ child.get_url }}">{{ child.label }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        {# Regular Menu Item #}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ item.get_url }}">{{ item.label }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>

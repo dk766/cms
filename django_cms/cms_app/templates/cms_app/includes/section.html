@@ -1,0 +1,128 @@
+{% load cms_tags %}
+<section id="{{ section.anchor_id }}" class="section section-{{ section.section_type }} {{ section.css_class }}" style="{% section_style section %}">
+    <div class="container">
+        {# Section Title #}
+        {% if section.title %}
+            <div class="section-title text-center mb-4">
+                <h2>{{ section.title }}</h2>
+            </div>
+        {% endif %}
+
+        {# Render section based on type #}
+        {% if section.section_type == 'hero' %}
+            {# Hero Section #}
+            <div class="hero-section text-center py-5">
+                {% for block in blocks %}
+                    <div class="hero-content" style="{% block_style block %}">
+                        {% render_content_block block %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'two_column' %}
+            {# Two Column Layout #}
+            <div class="row align-items-center">
+                {% for block in blocks %}
+                    <div class="col-md-6 mb-3" style="{% block_style block %}">
+                        {% render_content_block block %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'three_column' %}
+            {# Three Column Layout #}
+            <div class="row">
+                {% for block in blocks %}
+                    <div class="col-md-4 mb-3" style="{% block_style block %}">
+                        {% render_content_block block %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'carousel' %}
+            {# Carousel Section #}
+            <div id="carousel-{{ section.id }}" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for block in blocks %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="carousel-content" style="{% block_style block %}">
+                                {% render_content_block block %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ section.id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ section.id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+        {% elif section.section_type == 'features' %}
+            {# Features Grid #}
+            <div class="row g-4">
+                {% for block in blocks %}
+                    <div class="col-md-4 col-sm-6" style="{% block_style block %}">
+                        <div class="feature-item text-center p-4">
+                            {% render_content_block block %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'faq' %}
+            {# FAQ Section #}
+            <div class="accordion" id="faq-{{ section.id }}">
+                {% for block in blocks %}
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="heading-{{ block.id }}">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ block.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ block.id }}">
+                                {{ block.title }}
+                            </button>
+                        </h3>
+                        <div id="collapse-{{ block.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading-{{ block.id }}" data-bs-parent="#faq-{{ section.id }}">
+                            <div class="accordion-body">
+                                {{ block.content|safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'cta' %}
+            {# Call to Action Section #}
+            <div class="cta-section text-center py-5">
+                {% for block in blocks %}
+                    <div class="cta-content mb-3" style="{% block_style block %}">
+                        {% render_content_block block %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif section.section_type == 'testimonials' %}
+            {# Testimonials Section #}
+            <div class="row">
+                {% for block in blocks %}
+                    <div class="col-md-4 mb-4">
+                        <div class="testimonial-item card h-100" style="{% block_style block %}">
+                            <div class="card-body">
+                                {% render_content_block block %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            {# Default Layout - Stack blocks vertically #}
+            {% for block in blocks %}
+                <div class="content-block-wrapper mb-4" style="{% block_style block %}">
+                    {% render_content_block block %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</section>
