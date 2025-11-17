@@ -1,0 +1,40 @@
+{% extends 'cms_app/base.html' %}
+{% load cms_tags %}
+
+{% block title %}{{ page.meta_title|default:page.title }} - {{ site_config.site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    {% for section in sections %}
+        {% render_section section %}
+    {% empty %}
+        <div class="container py-5">
+            <div class="alert alert-info text-center">
+                <h2>No content available</h2>
+                <p>This page doesn't have any sections yet.</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
