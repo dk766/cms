@@ -1,7 +1,7 @@
 # Makefile for Django CMS
 # Simplifies common development tasks
 
-.PHONY: help setup install migrate createsuperuser demo run clean test collectstatic shell docker-build docker-up docker-down
+.PHONY: help setup install migrate createsuperuser demo run clean test collectstatic shell docker-build docker-up docker-down clone-site install-scraper
 
 # Default target
 help:
@@ -14,6 +14,12 @@ help:
 	@echo "  make migrate        - Run database migrations"
 	@echo "  make createsuperuser - Create Django superuser"
 	@echo "  make demo           - Load demo site data"
+	@echo ""
+	@echo "Website Cloning:"
+	@echo "  make install-scraper - Install web scraping dependencies"
+	@echo "  make clone-site     - Clone https://info.arhivadefacturi.ro/"
+	@echo "  make clone-simple   - Clone using simple scraper (fast)"
+	@echo "  make clone-selenium - Clone using Selenium (more reliable)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make run            - Start development server"
@@ -54,6 +60,27 @@ createsuperuser:
 demo:
 	@echo "Loading demo site..."
 	python manage.py create_demo_site
+
+# Install scraping dependencies
+install-scraper:
+	@echo "Installing web scraping dependencies..."
+	pip install -r requirements_scraping.txt
+	@echo "✓ Scraping tools installed"
+
+# Clone website (interactive)
+clone-site:
+	@echo "Cloning https://info.arhivadefacturi.ro/..."
+	./scripts/clone_arhiva.sh
+
+# Clone using simple scraper
+clone-simple:
+	@echo "Cloning website with simple scraper..."
+	python manage.py clone_arhiva_site
+
+# Clone using Selenium
+clone-selenium:
+	@echo "Cloning website with Selenium..."
+	python manage.py clone_arhiva_selenium --headless
 
 # Run development server
 run:
