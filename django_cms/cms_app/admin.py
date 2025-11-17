@@ -150,7 +150,7 @@ class PageAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 
 @admin.register(Section)
-class SectionAdmin(admin.ModelAdmin):
+class SectionAdmin(SortableAdminMixin, admin.ModelAdmin):
     """Admin for sections."""
     list_display = [
         'page', 'section_type', 'title', 'anchor_id',
@@ -188,7 +188,7 @@ class SectionAdmin(admin.ModelAdmin):
 
 
 @admin.register(ContentBlock)
-class ContentBlockAdmin(admin.ModelAdmin):
+class ContentBlockAdmin(SortableAdminMixin, admin.ModelAdmin):
     """Admin for content blocks."""
     list_display = [
         'section', 'block_type', 'title_preview',
