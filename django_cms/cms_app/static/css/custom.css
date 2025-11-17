@@ -1,0 +1,355 @@
+/*
+ * Custom CSS for Django CMS
+ */
+
+/* General Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+    transform: translateY(-2px);
+}
+
+/* Sections */
+.section {
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title h2 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+/* Content Blocks */
+.content-block-wrapper {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-block-text {
+    line-height: 1.8;
+}
+
+.content-block-text h1,
+.content-block-text h2,
+.content-block-text h3,
+.content-block-text h4,
+.content-block-text h5,
+.content-block-text h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.content-block-image img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.content-block-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Gallery */
+.content-block-gallery .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.content-block-gallery .gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.content-block-gallery .gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Video */
+.content-block-video {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Buttons */
+.content-block-button .btn {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.content-block-button .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon + Text */
+.content-block-icon-text {
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.content-block-icon-text:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Code Block */
+.content-block-code pre {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.content-block-code code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Features Grid */
+.feature-item {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+/* Carousel */
+.carousel-item {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 50%;
+}
+
+/* Testimonials */
+.testimonial-item {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.testimonial-item:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+/* FAQ Section */
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
+
+/* Footer */
+.footer a {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.footer a:hover {
+    opacity: 0.8;
+}
+
+.social-links a {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+}
+
+/* Media Library */
+.media-library-grid .card {
+    transition: all 0.3s ease;
+}
+
+.media-library-grid .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Utilities */
+.shadow-soft {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.rounded-lg {
+    border-radius: 12px;
+}
+
+/* Scroll to top button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top.show {
+    display: flex;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .section {
+        padding: 3rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-title h2 {
+        font-size: 1.75rem;
+    }
+
+    .content-block-gallery .gallery-item img {
+        height: 200px;
+    }
+}
+
+/* Loading animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .footer,
+    .scroll-to-top {
+        display: none;
+    }
+
+    .section {
+        page-break-inside: avoid;
+    }
+}
