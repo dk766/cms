@@ -1,0 +1,100 @@
+{% extends "cms_app/backend/base.html" %}
+
+{% block title %}Site Settings{% endblock %}
+{% block page_title %}Site Settings{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="stat-card">
+            <h3 class="mb-4">Site Configuration</h3>
+            <p class="text-muted mb-4">Manage your site's global settings, branding, and configuration.</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Basic Information -->
+                <h5 class="mb-3">Basic Information</h5>
+                <div class="mb-3">
+                    <label for="site_name" class="form-label">Site Name</label>
+                    <input type="text" class="form-control" id="site_name" name="site_name" value="{{ config.site_name }}">
+                </div>
+
+                <!-- Colors -->
+                <h5 class="mb-3 mt-4">Branding & Colors</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="primary_color" class="form-label">Primary Color</label>
+                        <input type="color" class="form-control form-control-color" id="primary_color" name="primary_color" value="{{ config.primary_color|default:'#007bff' }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="secondary_color" class="form-label">Secondary Color</label>
+                        <input type="color" class="form-control form-control-color" id="secondary_color" name="secondary_color" value="{{ config.secondary_color|default:'#6c757d' }}">
+                    </div>
+                </div>
+
+                <!-- Typography -->
+                <h5 class="mb-3 mt-4">Typography</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="font_family" class="form-label">Font Family</label>
+                        <input type="text" class="form-control" id="font_family" name="font_family" value="{{ config.font_family|default:'Arial, sans-serif' }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="base_font_size" class="form-label">Base Font Size</label>
+                        <input type="number" class="form-control" id="base_font_size" name="base_font_size" value="{{ config.base_font_size|default:'16' }}">
+                    </div>
+                </div>
+
+                <!-- SEO -->
+                <h5 class="mb-3 mt-4">SEO Settings</h5>
+                <div class="mb-3">
+                    <label for="default_meta_description" class="form-label">Default Meta Description</label>
+                    <textarea class="form-control" id="default_meta_description" name="default_meta_description" rows="3">{{ config.default_meta_description }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="google_analytics_id" class="form-label">Google Analytics ID</label>
+                    <input type="text" class="form-control" id="google_analytics_id" name="google_analytics_id" value="{{ config.google_analytics_id }}" placeholder="G-XXXXXXXXXX">
+                </div>
+
+                <!-- Social Media -->
+                <h5 class="mb-3 mt-4">Social Media Links</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="facebook_url" class="form-label">Facebook URL</label>
+                        <input type="url" class="form-control" id="facebook_url" name="facebook_url" value="{{ config.facebook_url }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="twitter_url" class="form-label">Twitter/X URL</label>
+                        <input type="url" class="form-control" id="twitter_url" name="twitter_url" value="{{ config.twitter_url }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+                        <input type="url" class="form-control" id="linkedin_url" name="linkedin_url" value="{{ config.linkedin_url }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="instagram_url" class="form-label">Instagram URL</label>
+                        <input type="url" class="form-control" id="instagram_url" name="instagram_url" value="{{ config.instagram_url }}">
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <h5 class="mb-3 mt-4">Footer Settings</h5>
+                <div class="mb-3">
+                    <label for="footer_text" class="form-label">Footer Text</label>
+                    <textarea class="form-control" id="footer_text" name="footer_text" rows="2">{{ config.footer_text }}</textarea>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Save Settings
+                    </button>
+                    <a href="{% url 'backend_dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

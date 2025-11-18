@@ -1,0 +1,53 @@
+{% extends "cms_app/backend/base.html" %}
+
+{% block title %}Create New Page{% endblock %}
+{% block page_title %}Create New Page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="stat-card">
+            <h3 class="mb-4">Create a New Page</h3>
+
+            <form method="post" id="createPageForm">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">Page Title *</label>
+                    <input type="text" class="form-control" id="title" name="title" required autofocus>
+                    <small class="text-muted">The title of your page (e.g., "About Us", "Contact", etc.)</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="slug" class="form-label">URL Slug</label>
+                    <input type="text" class="form-control" id="slug" name="slug">
+                    <small class="text-muted">Leave blank to auto-generate from title. URL will be: /<span id="slugPreview"></span>/</small>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Create Page
+                    </button>
+                    <a href="{% url 'backend_page_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-generate slug from title
+document.getElementById('title').addEventListener('input', function() {
+    const title = this.value;
+    const slug = title.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    document.getElementById('slug').value = slug;
+    document.getElementById('slugPreview').textContent = slug;
+});
+</script>
+{% endblock %}

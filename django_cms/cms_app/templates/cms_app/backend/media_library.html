@@ -1,0 +1,161 @@
+{% extends "cms_app/backend/base.html" %}
+
+{% block title %}Media Library{% endblock %}
+{% block page_title %}Media Library{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2>Media Library</h2>
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-primary" onclick="document.getElementById('mediaUpload').click()">
+            <i class="bi bi-upload"></i> Upload Media
+        </button>
+        <input type="file" id="mediaUpload" multiple accept="image/*" style="display: none;" onchange="uploadMedia()">
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="stat-card">
+            <form method="get" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" name="search" class="form-control" placeholder="Search media..." value="{{ search_query }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="type" class="form-select">
+                        <option value="">All Types</option>
+                        <option value="image" {% if current_type == 'image' %}selected{% endif %}>Images</option>
+                        <option value="video" {% if current_type == 'video' %}selected{% endif %}>Videos</option>
+                        <option value="document" {% if current_type == 'document' %}selected{% endif %}>Documents</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Filter
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'backend_media_library' %}" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-x-circle"></i> Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Media Grid -->
+<div class="row">
+    <div class="col-12">
+        <div class="stat-card">
+            {% if media_files %}
+            <div class="row g-3">
+                {% for media in media_files %}
+                <div class="col-md-3 col-sm-4 col-6">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            {% if media.media_type == 'image' %}
+                            <img src="{{ media.file.url }}" class="img-fluid mb-2" style="max-height: 150px; object-fit: cover;">
+                            {% else %}
+                            <i class="bi bi-file-earmark" style="font-size: 3rem;"></i>
+                            {% endif %}
+                            <h6 class="card-title small">{{ media.title }}</h6>
+                            <small class="text-muted">{{ media.uploaded_at|date:"M d, Y" }}</small>
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-outline-primary" onclick="copyUrl('{{ media.file.url }}')" title="Copy URL">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_type %}&type={{ current_type }}{% endif %}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_type %}&type={{ current_type }}{% endif %}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-images" style="font-size: 4rem; color: #ccc;"></i>
+                <p class="text-muted mt-3">No media files yet. Upload your first file!</p>
+                <button class="btn btn-primary" onclick="document.getElementById('mediaUpload').click()">
+                    <i class="bi bi-upload"></i> Upload Media
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function uploadMedia() {
+    const files = document.getElementById('mediaUpload').files;
+    if (files.length === 0) return;
+
+    showLoading();
+
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        formData.append('file', files[i]);
+    }
+
+    fetch('/backend/api/media/upload/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideLoading();
+        if (data.success) {
+            showToast('Media uploaded successfully', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } else {
+            showToast(data.error || 'Failed to upload media', 'danger');
+        }
+    })
+    .catch(error => {
+        hideLoading();
+        showToast('An error occurred', 'danger');
+        console.error('Error:', error);
+    });
+}
+
+function copyUrl(url) {
+    const fullUrl = window.location.origin + url;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+        showToast('URL copied to clipboard', 'success');
+    });
+}
+</script>
+{% endblock %}
